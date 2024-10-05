@@ -14,6 +14,7 @@ class Auth:
             with open(self.csv_file, mode='r') as file:
                 reader = csv.DictReader(file)
                 for row in reader:
+                    print(row)
                     users[row['email']] = row
         except FileNotFoundError:
             print("User data file not found.")
@@ -67,7 +68,11 @@ class Auth:
                     return True
                 else:
                     self.attempts += 1
-                    print(f"Incorrect password. Attempts remaining: {self.max_attempts - self.attempts}")
+                    print(f"Incorrect password. Attempts remaining: {self.max_attempts - self.attempts}. Do you want to reset the password? (y/n)")
+                    reset_password = input()
+                    if reset_password.lower() == 'y':
+                        self.reset_password()
+                        return True
             else:
                 print("Email not found. Do you want to create a new account? (y/n)")
                 create_account = input()
@@ -104,7 +109,7 @@ class Auth:
 
                 # Write back to CSV
                 with open(self.csv_file, mode='w', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=['email', 'hashed_password', 'security_question'])
+                    writer = csv.DictWriter(file, fieldnames=['email', 'hashed_password', 'security_question', 'security_answer'])
                     writer.writeheader()
                     for user_email, user_data in users.items():
                         writer.writerow(user_data)

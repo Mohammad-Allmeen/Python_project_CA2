@@ -7,7 +7,16 @@ def main():
     
     if login_success:
         geo = Geo()
-        geo.run()
+        while True:
+            geo.run()
+            opt = input("Options:\n1. Check for another IP\n2. Logout\n")
+            if opt == '1':
+                continue
+            elif opt == '2':
+                break
+            else:
+                print("Invalid option. Exiting...")
+                break
     else:
         print("Exiting application.")
 
